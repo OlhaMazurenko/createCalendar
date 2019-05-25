@@ -1,38 +1,36 @@
+let calendar = document.querySelector('#calendar');
+let days = ['пн', 'вт', 'ср', 'чт', 'пн', 'сб', 'нд'];
+let table = document.createElement('table');
+let header = document.createElement('tr');
+table.append(header);
+
+for (const day of days) {
+    header.insertAdjacentHTML('beforeend', `<th>${day}</th>`)
+  }
+  
+function getDaysInMonth(m, y) {
+  return /4|6|9|11/.test(m)?30:m==2?(!(y%4)&&y%100)||!(y%400)?29:28:31;
+}
+
 function createCalendar(id, year, month) {
-    var elem = document.getElementById(id);
-    var mon = month - 1; 
-    var d = new Date(year, mon);
-    var table = '<table><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>';
-
-    for (var i = 1; i < d.getDay(); i++) {
-      table += '<td></td>';
-    }
-
-    while (d.getMonth() === mon) {
-      table += '<td>' + d.getDate() + '</td>';
-
-      if (d.getDay() % 7 === 0) { 
-        table += '</tr><tr>';
+  let date = new Date(year, month-1);
+  let daysInMonth = getDaysInMonth(month, year);
+  let nextDayToAdd = 1 -  date.getDay();
+   
+  while (nextDayToAdd <= daysInMonth) {
+    let week = document.createElement('tr');
+    for (let i = 0; i < 7; i++) {
+      const day = document.createElement('td');
+      if (nextDayToAdd > 0 && nextDayToAdd <= daysInMonth) {
+        day.innerHTML = nextDayToAdd;
       }
-
-      d.setDate(d.getDate() + 1);
+      nextDayToAdd++;
+      week.appendChild(day);
     }
-
-    if (d.getDay() !== 0) {
-      for (var i = getDay(d); i < 7; i++) {
-        table += '<td></td>';
-      }
-    }
-
-    table += '</tr></table>';
-
-    elem.innerHTML = table;
+    table.appendChild(week);
   }
-
-  function getDay(date) { // получить номер дня недели, от 0(пн) до 6(вс)
-    var day = date.getDay();
-    if (day === 0) day = 7;
-    return day - 1;
-  }
-
-  createCalendar("calendar", 2019, 5)
+  
+  return table;
+}
+  
+calendar.appendChild(createCalendar("calendar", 2019, 2));
