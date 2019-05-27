@@ -12,7 +12,7 @@ function getDaysInMonth(m, y) {
   return /4|6|9|11/.test(m)?30:m==2?(!(y%4)&&y%100)||!(y%400)?29:28:31;
 }
 
-function createCalendar(id, year, month) {
+function createCalendar(year, month) {
   let date = new Date(year, month-1);
   let daysInMonth = getDaysInMonth(month, year);
   let nextDayToAdd = 1 -  date.getDay();
@@ -33,4 +33,4 @@ function createCalendar(id, year, month) {
   return table;
 }
   
-calendar.appendChild(createCalendar("calendar", 2019, 2));
+calendar.appendChild(createCalendar(2019, 2));
